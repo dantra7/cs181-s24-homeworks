@@ -99,7 +99,7 @@ In this class we will be exploring the question of ``how do we model the trend i
     Hint: What special property must our $\mathbf{X}$ matrix possess? What must be true about our data points in $\mathcal{D}$ for this special property to hold?
     \item Compute $\mathbf{w}$ by hand via your matrix expression in (3) and compare it with your solution in (1). Do your final answers match? What is one advantage for phrasing the problem of fitting the model in terms of matrix notation? 
     \item In real-life, we often work with datasets that consist of hundreds, if not millions, of points. In such cases, does our analytical expression for $\mathbf{w}$ that we derived in (3) apply immediately to the case when $\mathcal{D}$ consists of more than two points? Why or why not?
-\end{enumerate}
+\end{enumerate} 
     
 \end{problem}
 
@@ -108,7 +108,40 @@ In this class we will be exploring the question of ``how do we model the trend i
 
 \begin{solution}
 	\textbf{1.} To begin you can take the equation $y = w_0 + w_1x$ and then plug in the values 
-    $x_1, x_2, y_1, y_2$ to get $y_1 = w_0 + w_1 x_1$
+    $x_1, x_2, y_1, y_2$ to get $y_1 = w_0 + w_1x_1$ and $y_2 = w_0 + w_1x_2$. From there, we can manipulate the first equation to get that $w_0 = y_1 - w_1x_1$. Then, we can use substitution
+    to plug the value of $w_0$ into the second equation and get that $y_2 = y_1 - w_1x_1 + w_1x_2$. \\
+    This can be manipulated to get $-w_1x_1 + w_1x_2 = y_2 - y_1$ then $w_1(-x_1 + x_2) = y_2 - y_1$ which gets simplified
+    to $w_1 = \frac{y_2 - y_1}{x_2 - x_1}$. \\
+    Now that we have $w_1$ solved for, it is easy to substitute that value into the equation $w_0 = y_1 - w_1 x_1$ to get that $w_0 = y_1 - \frac{x_1y_2 - x_1y_1}{x_2 - x_1}$ \\\\
+
+    \textbf{2.} For this system of linear equations, we can express it as $y = Xw$ such that \\
+    $ y = \begin{bmatrix} y_1 \\ y_2 \end{bmatrix}, X = \begin{bmatrix} 1 & x_1 \\ 1 & x_2 \end{bmatrix}, w = \begin{bmatrix} w_0 \\ w_1 \end{bmatrix}$ \\
+    This is because if you do the multiplication on the right side of the equation, you get the augmented matrix: 
+    $\begin{bmatrix}
+        y_1 & | & w_0 + w_1x_1 \\
+        y_2 & | & w_0 + w_1x_2 
+    \end{bmatrix}$ 
+    Which is the same as the system of linear equations found in Part 1. \\\\
+
+    \textbf{3.} In order for there to be a unique solution for $w = \begin{bmatrix} w_0 \\ w_1 \end{bmatrix}$, it must be true that $x_1 \neq x_2$ and $y_1 \neq y_2$. 
+    In other words, the matrix X must be invertible in order for $w$ to have a unique solution. 
+    This can be expressed with $w = X^{-1}y$ \\\\
+
+    \textbf{4.} To begin, we must calculate the value of $X^{-1}$ and get that $X^{-1} = \frac{1}{x_1 - x_2} \begin{bmatrix}
+        -x_2 & x_1 \\ 1 & -1
+    \end{bmatrix}$
+    Then we can multiply $X^{-1}y$ to get that $w = \frac{1}{x_1 - x_2} \begin{bmatrix}
+        x_2y_1 + x_1y_2 \\ y_1 - y_2
+    \end{bmatrix}$ \\
+    As linear equations this means there is $w_0 = \frac{-x_2y_1 + x_1y_2}{x_1 - x_2}$ and $w_1 = \frac{y_1 - y_2}{x_1 - x_2}$, 
+    both of which agree with the solution in Part 1. One of the advantages of phrasing the problem this way, in terms of matrix notation is that 
+    it is a cleaner process that produces simultaneous equations for $w_0$ and $w_1$ rather than the messier process of having to use substitution and manipulating 
+    two separate linear equations. \\\\
+
+    \textbf{5.} In the case of a dataset with hundreds or more points, the analytical expression for $w$ does not automatically apply. 
+    This is because the expression for $w$ found in part 3 implies and works based on a linear relationship between the points, which as stated occurs when $X$ is invertible. 
+    That is not to say that the relationship never holds, if all points in the dataset have a linear relationship than the relationship still holds since they will all follow the same linear properties. 
+     
 \end{solution}
 
 \color{black}
@@ -145,7 +178,12 @@ $$y = f(x_1, x_2) = \exp\left(-(x_1 - 2)^2 - (x_2 - 1)^2 \right)$$
 
 
 \begin{solution}
-	Your solution here.
+    \textbf{1.} Based on this formula, Nari's goal is achievable. The plant has a maximum height since the graph for $-3x^2 + 72x + 70$ is concave down and so by nature of concave graphs, will inevitably have a global maximum, which will tell Nari the maximum height and optimal amount of water per week. \\\\
+
+    \textbf{2.} In order to find the optimal amount of water per week, we can take the derivative of the equation, getting that $y' = -6x + 72$. Then we can solve for the zeroes of this equation to get the critical points. 
+    This leaves us with the only critical point being at $x = 12$. Then, with this critical point, we can take the second derivative, $y'' = -6$ to discover that at $x=12$, the concavity is negative, which means that the critical point is a maximum. 
+    Lastly, by the property of a concave down parabolic graph, there is only one maximum point, so we know that $x = 12$ is a global maximum. From these, we can determine that if Nari waters her plant
+    12 oz of water per week, the plant can reach a maximum of 502 mm. 
 \end{solution}
 
 
