@@ -226,8 +226,24 @@ For this problem, you may find the \texttt{multivariate\_normal} module from \te
 
 \begin{solution}
 	\textbf{1b.} From my histogram, I have found that the most likely combination of weight and size is 
-    at W $\approx$ 3.75 and $S \approx 120$ 
-\end{solution} 
+    at W $\approx$ 3.75 and $S \approx 120$. This values are extremely close to the theoretical expected size and weight of the package, with those values being W = 4 and S = 120. \\\\
+
+    \textbf{2.} Comparing the two PDF plots, one can see that since the graph of W remains virtually the same across different values of S, with only a horizontal shift, which suggests that W and S have a linear correlation,
+    The graph illustrates this because when the value of S increases, the pdf of the weight retains the shape but moves slights to the right, meaning that with the increase in size, there is an equally 
+    likely increase in weight. \\\\
+
+    \textbf{3.} One reason who a Gaussian distribution is a fair representation of this is because size and weight of packages are not unlikely to naturally have a Gaussian distribution,
+    and we can use the Gaussian distribution to model roughly how the packages should behave, if there is some deviation. It may be flawed on the other hand by way of how the world works, 
+    especially with box sizes not being all equally valid. There are some sizes of boxes that are much more produced and therefore more packages go out in those packages, so the graph for the distribution
+    of size may not be as continuous as a Gaussian distribution may suggest, which is a fault in the abstraction. \\\\
+
+    \textbf{4.} To begin to find E[T] and Var[T], we can use the property of Expected Values to get that $E[T] = E[60] + 0.6E[W] + 0.2E[S] + E[\epsilon]$ 
+    we also know from the problem that $E[S] = 120$ and $E[W] = 4$, so we already have that $E[T] = 60 + 0.6(4) + 0.2(120) + E[\epsilon]$, so all that's left to do is find $E[\epsilon]$, and 
+    since $\epsilon$ is given to have mean 0, we know that $E[T] = 60 + 2.4 + 24 + 0 = 86.4$. \\
+    Similarly, we can use the property that $Var(T) = 0.6^2 Var[T] + 0.2^2 Var[T] + Var[\epsilon] + 2(0.6)(0.2)Cov[S,W]$. Now that we have this equation, we can use the
+    fact that $Cov[S,W] = 1$, $Var[S] = Var[W] = 1.5$ and $Var[\epsilon] = 25$ to get that $Var[T] = 0.36(1.5) + (0.04)(1.5) + 25 + (.24)(1) = 25.84$ \\
+    Overall, this gives us $E[T] = 86.4$ and $Var[T] = 25.84$
+\end{solution}
 
 
 \end{document}
