@@ -161,17 +161,38 @@ regressions, we will interrogate the set-up of our problem.
 
   \item In the problems below, we will focus on interpolating
     temperatures for years not provided in the training set.  What
-    kind of application would such a regression be useful for?
+    kind of application would such a regression be useful for? 
 
 \end{enumerate}
   
 \end{problem}
 
 % qwer
+\newpage
 \begin{solution}
-	Your solution here.
+	\textbf{1.} The data in this dataset was processed by looking at the concentration 
+  of Deuterium in ice cores and using that concentration along with the chronological
+  age of the ice to estimate the temperatures at the time that the ice was formed. 
+  In this case, since they were taking samples across various points, the scientists 
+  decided to make corrections according to the elevation of the sample and sea-water interference.
+  The temperature in the temperature column is the difference between a year's temperature as compared 
+  with the previous 1000 years before it. Essentially, this makes temperature a measure of how much 
+  temperature has increased relative to the average.\\\\
+
+  \textbf{2.} It would not be advisable to preach the ability of using this graph to justify 
+  earth cooling down again because even the most recent entries in this list are over 2000 years old, 
+  and the pattern of warming and cooling could have changed in that time. It could be helpful instead to 
+  look at a graph that plots the same thing as the given graph but for the last two centuries so that we can more correctly 
+  see if something is artificially ruining the map or if the modern extension still follows the same trends we 
+  would expect it to. It is reasonable to say that we expect that the earth will cool again, but until we can 
+  see the graph for the last two thousand years, it seems dangerous to say that it will unequivocally. \\\\
+
+  \textbf{3.} That is helpful for the situation I was describing above, where we want to see what a predicted periodic function looks like
+  and extending it to the present day so we can compare what is actually occuring with what
+  we expected to occur and assign some sort of causality to the problem. 
 \end{solution}
 % rewq
+\newpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 2
@@ -198,7 +219,7 @@ two points increases, such as
 where $\tau$ represents the square of the lengthscale (a scalar value that 
 dictates how quickly the kernel decays).  In this
 problem, we will consider optimizing what that (squared) lengthscale
-should be.
+should be. 
 
 \noindent\emph{Make sure to include all required plots in your PDF.}
 
@@ -226,9 +247,42 @@ Include your plot in your solution PDF.
 
 
 % qwer
+\newpage
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{tau_plot.png}
+\end{figure}
+
 \begin{solution}
-	Your solution here.
+	\textbf{1.} The plot for this Kernel Regression with respect to the values 
+  $\tau = 1, 50, 2500$ is shown above. As you can see in the graph, as Tau increases, the squared error also increases. When $\tau = 1$, the line goes through
+  every data point, creating a squared error of 0. Then when $\tau$ is increased to 50, the line is still very accurate and goes through most points, 
+  but has some value for the squared error. Most notably, when $\tau = 50$ the line rarely passes through points which are local extrema. This pattern continues when 
+  we once again increase tau to be equal to 2500, where we see that the line has a much greater squared error and does not go through many points specifically. \\\\
+
+  \textbf{2.} To begin this problem, it is important to consider it in terms of $f_\tau(x)$. To find the MSE of the data set, we need to do $\frac{1}{M} \sum_{m=1}^{M}(y'_m - f_\tau(x'_m))^2$. 
+  We can then substitute for the equation of $f_\tau(x)$ that we used in Part 1 to get that 
+  MSE = $\frac{1}{M} \sum_{m=1}^{M}[y'_m - \frac{\sum_{n=1}^{N}(K_\tau(x_n,x'_m)y_n)}{\sum_{n=1}^{N}(K_\tau(x_n, x'_m))}]^2$. And this is in terms of $K_\tau, D_{test},$ and $D_{train}$ but not 
+  $f_\tau$. \\\\
+
+  \textbf{3.} If we use the training set as our test set, the value of $\tau$ that would give the 
+  smallest loss would be a value such that $\tau \approx 0$. This is because as the value of $\tau$ gets smaller,
+  the denominator of the exponential in $K_T$ gets smaller and produces values closer and closer to 1, meaning that two points 
+  such that $x = x'$ are assigned a very high similarity. On the other hand, if $x \neq x'$, then $K_\tau$ assigns a very low
+  similarity between the two points. What this does is that it causes a lot of overfitting on the curve as any slight difference between 
+  points gets a high value for the MSE and so the line passes through every point, being useless for generalizations. \\\\
+
+  \textbf{4.} When I computed the values of MSE for the various values of $\tau$, I got the results: 
+  [tau = 1: loss = 1.9472621565209178], [tau = 50: loss = 1.8582899169613447], [tau = 2500: loss = 8.333886806980791]. 
+  This means that the model that yields the least MSE is the value $\tau = 50$. \\\\
+
+  \textbf{5.} The time and space complexity with respect to the size of N for kernelized regression is that 
+  as the data set grows, the time it takes to calculate the regression also increases linearly. This is because the equation for 
+  kernelized regression involves multiple sums that sum over all of the data points individually. Each sum operates on O(N), but when also 
+  the kernelized regression operates with pairwise sum as well which operates on the order of $O(N^2)$. The amount of computations is similarly related, 
+  being tied with the amount of sums that have to be taken as directly influenced by the size of N.
 \end{solution}
+\newpage
 % rewq
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -275,9 +329,31 @@ nearest-neighbors.  Recall that kNN uses a predictor of the form
 
 
 % qwer
+\newpage
 \begin{solution}
-	Your solution here.
+	\textbf{1. } The behavior of the functions for $k = 1, 3, N - 1$ is very similar 
+  to the observed behaviors of kernelized regression with values $\tau = 1, 50, 2500$. 
+  With $k = 1$, the regression line has almost no error and goes through all of the training data exactly, 
+  resulting in a very jagged and unnatural line. With $k=3$, the line is still 
+  passing through most points in the training data, but it has more deviation from the points. 
+  This is especially prevalent in areas where there are multiple points congregated around a similar area, 
+  in which case the line at $k = 3$ gravitates towards those clumps, mainly ignoring extra. Then with the case
+  of $k = N - 1$, the resulting line is not very accurate to the data point and is instead
+  squarely in the middle of the distribution. \\\\
+
+  \textbf{2. } When I computed the MSE on the test set for each value of k, I got the following: 
+  [k = 1: MSE loss = 1.7406000000000004].
+  [k = 3: MSE loss = 3.890766222222223],
+  [k = 55: MSE loss = 9.66397324033058],
+  [k = 56: MSE loss = 9.528571442602042]. Based on these numbers, the solution with the lowest MSE is $k = 1$, 
+  which makes sense because that is the most direct method of relating it to the point directly adjacent to it which leads
+  to almost no error. 
+
+  \textbf{3. } Since kNN is only interested in individual points and their relationships with neighbors, the 
+  complexity of both the time and space of KNN regression is on the order O(N). This means that as the dataset increases to a value N, 
+  the time and complexity will increase linearly with the increase in data points. 
 \end{solution}
+\newpage
 % rewq
 
 
@@ -371,11 +447,38 @@ Contrast this with transformations (such as standardization) that cause the vari
 MSE can no longer be directly compared.
 
 \end{framed}
-
+\newpage
 % qwer
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{Linear_bases.png}
+\end{figure}
+
 \begin{solution}
-	Your solution here.
+  \textbf{1.} Image above.
+
+  \textbf{2.} Part (a): Train MSE: 4.82; Test MSE: 5.72 \\ Part (b): Train MSE: 5.53; Test MSE: 6.47 \\
+  Part (c): Train MSE: 2.88; Test MSE: 4.55 \\ Part (d): Train MSE: 0.64; Test MSE: 0.00 \\
+  From these values, it is evident that Test d has the least MSE, which is surprising to me because that graph seems to be entirely overfitted, 
+  being so complex that it has to even stretch out the range of the graph. It seems like graph B underfits the data because it has the most standard 
+  error. Part c is a good mix of the two, with the data being well fit but having a small mse.
+
+  \textbf{3.} The transforms $\phi$ serve as a basis for the linear regression so that the resulting regression line doesn't need to be linear
+  but instead can be linear with respect to the basis, resulting in more advanced regression lines. What the phi is determines the kind of 
+  graph that ultimately results when you do the regression and so can impact mean squared error. 
+
+  \textbf{4.} With a training size of N, linear regression increases on the order O(N) because each new data point only adds one more calculation,
+  rather than the more complex results with KNN or Kernel. The same is true for both the space and the time. 
+
+  \textbf{5.} kNN, Kernelized, and Linear regression are all helpful ways to fit datapoints, but each comes with their own drawbacks. Performance wise, 
+  when you compare the best test that is not overfit across all three methods of regression, we find that for kernelized regression, the best value is 1.84, 
+  being a very small value for MSE, kNN offered an optimal MSE of 3.89, which is worse, and linear provided a minimum mse of 4.55, which is the worst. 
+  This also agrees with our discussions in class because kNN is just a simpler version of kernelized, and both are more advanced than the linear methods. 
+  As the level of complexity increases, the mean squared error decreases, which aligns with what we've went over in class. 
+ 
 \end{solution}
+
+\newpage
 % rewq
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -430,6 +533,7 @@ $y$ are scalars, $w$ is also a scalar.
   
 \end{problem}
 
+\newpage
 \begin{solution}
 	Your solution here.
 \end{solution}
@@ -438,10 +542,10 @@ $y$ are scalars, $w$ is also a scalar.
 % Name and Calibration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-\subsection*{Name}
+\subsection*{Name:} Dan Tracy
 
 \subsection*{Collaborators and Resources}
-Whom did you work with, and did you use any resources beyond cs181-textbook and your notes?
-
+Whom did you work with, and did you use any resources beyond cs181-textbook and your notes? \\
+N/A
 
 \end{document}
