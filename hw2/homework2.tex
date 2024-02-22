@@ -186,6 +186,54 @@ Use the given code to plot the true process versus your learned models. Include 
 \end{enumerate}
 \end{framed}
 
+\newpage
+\textbf{1.} I'm not entirely sure what the submittable portion of this problem is, because it is simplying saying to set up the way the model will be run,
+so to avoid not submitting anything, I decided to submit my code in this section, which passed the tests that the question talks about. 
+For this part of the problem, I changed the Code in Jupyter Notebook to the following. For Basis2 and Basis3 I wrote: \\
+\begin{center}
+  \includegraphics{basis_code.png}
+\end{center}
+
+Then, for the fit and predict functions, I wrote the following code: 
+\begin{center}
+  \includegraphics{fit_and_predict.png}
+\end{center}
+
+With these functions, I was able to make all three bases pass the test. \\\\
+
+\textbf{2.} The plots I got are as given: 
+\begin{center}
+  \includegraphics[width=0.3\textwidth]{basis1.png} \includegraphics[width=0.3\textwidth]{basis2.png} \includegraphics[width=0.3\textwidth]{basis3.png}
+\end{center}
+
+From looking at these plots, it is apparent the relationship between variance and bias. In the first basis, which is the simplest, there is a high 
+level of bias, as can be seen through the distance between the mean of the learned model and the ground truth of the dataset. Of the three graphs, the first basis has the most 
+bias, but it also has a very low variance, because the line does not fit the data well. That means that outlying points will do comparitively little to sway the mean. This trend is 
+continued with bases 2 and 3, with the trend being that as the complexity increases, the bias decreases, with the model fitting the data better, but also the curve gets 
+increasingly more susceptible to variation from new points. The third basis has the best approximation of the true data in terms of bias, but also is prone to overfitting 
+as seen in the irregular behaviors of the graph. \\\\
+
+\textbf{3.} If we increased the size of each dataset to a larger number, that would lead to a decrease in bias across 
+all three bases. This is because this increased N would allow each model more information to train on and would lead to a 
+more informed approximation, which will have a lower bias than with less data points. The more data points there are though the 
+more potential there is for variance. As data continues to be collected, that data picks up more on variability within what is being measured,
+so the models are likely to have a higher variance. \\\\
+
+\textbf{4.} \\\\
+
+\textbf{5.} To identify the ideal time, I would use the second model; the one based off of 
+basis 2. That is because that model is in a nice sweet spot of not being overfit and having a reasonably small bias 
+and also a reasonably small variance. Of the three bases, it is the most stable and accurate, so it is the best to use for 
+analyzing the information. I would then request the time to be between time 4 and time 5, since those are times when the planet was 
+very frequently spotted through the telescope, while also having a minimal mean squared error across that interval. If this project were to be moved 
+to a more humid climate, the model found above will most likely not be applicable. These models are specific to a cloudless environment where 
+there is no interference from weather, and in a different climate that is unlikely to also be the case, so different data must be collected to account 
+for weather patterns and cloud patterns in the new area. Looking at the data provided in planet-obs-alternate, it appears that the alternate location has a very different 
+graph for planet observation. The initial location has a much more sinusoidal nature to the curve of planet visibility, but it appears that the alternate dataset has much more consistent
+visibility with no clear sinusoidal function to model it. Refiting the models to match this data makes sense because of the difference in distribution between the locations. This being
+a result of the weather in the area makes sense and it does effect your request for time, because you want to make sure you avoid a time when there is no probability of seeing the planet just due 
+to clouds being in the way. It would also be helpful in this case to prove that the clouds being there does not have a spurious connection to the planet being visible which is skewing the data, 
+but it is still best to request time according to the weather patterns. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 2
@@ -263,6 +311,15 @@ $\boldX^{-\top} := (\boldX^{\top})^{-1}$
  \end{align*}
  \end{problem}
 
+ \newpage 
+ \textbf{1.} To find the log likelihood, we can start with the equation for likelihood and work 
+ from there. The equation for likelihood of one point $(x_i, y_i)$ is expressed as $P(x_i,y_i | \pi) = P(x_i | y_i = C_k)P(y_i = C_k | \pi)$ 
+ Therefore across the whole dataset it would result in $P(D|\pi) = \Pi_{i=1}^N[P(x_i | y_i = C_k)P(y_i = C_k | \pi)]$. Then we also know that the 
+ prior which is that $P(y = C_k | \pi) = \pi_k$, so we know $P(D|\pi) = \Pi_{i=1}^N[P(x_i | y_i = C_k)\pi_k]$. Then, we can take the log of each side 
+ to get $\ln(P(D|\pi)) = \sum_{i=1}^{N}ln[P(x_i|y_i = C_k) * \pi_k]$ \\\\
+
+ \textbf{2.} As per the hint provided in the problem, we know that $L(x, \lambda) = f(x) + \lambda g(x)$ and we know in this case that $f(x)$ is the log likelihood,
+ and that $g(x)$ is the restriction on $\pi_k$, so we have $L(\pi, \lambda) = \ln(P(D | \pi)) + \lambda(\sum_{k}\pi_k-1)$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 3

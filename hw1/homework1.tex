@@ -455,20 +455,20 @@ MSE can no longer be directly compared.
 \end{figure}
 
 \begin{solution}
-  \textbf{1.} Image above.
+  \textbf{1.} Image above. \\\\
 
   \textbf{2.} Part (a): Train MSE: 4.82; Test MSE: 5.72 \\ Part (b): Train MSE: 5.53; Test MSE: 6.47 \\
   Part (c): Train MSE: 2.88; Test MSE: 4.55 \\ Part (d): Train MSE: 0.64; Test MSE: 0.00 \\
   From these values, it is evident that Test d has the least MSE, which is surprising to me because that graph seems to be entirely overfitted, 
   being so complex that it has to even stretch out the range of the graph. It seems like graph B underfits the data because it has the most standard 
-  error. Part c is a good mix of the two, with the data being well fit but having a small mse.
+  error. Part c is a good mix of the two, with the data being well fit but having a small mse. \\\\
 
   \textbf{3.} The transforms $\phi$ serve as a basis for the linear regression so that the resulting regression line doesn't need to be linear
   but instead can be linear with respect to the basis, resulting in more advanced regression lines. What the phi is determines the kind of 
-  graph that ultimately results when you do the regression and so can impact mean squared error. 
+  graph that ultimately results when you do the regression and so can impact mean squared error. \\\\
 
   \textbf{4.} With a training size of N, linear regression increases on the order O(N) because each new data point only adds one more calculation,
-  rather than the more complex results with KNN or Kernel. The same is true for both the space and the time. 
+  rather than the more complex results with KNN or Kernel. The same is true for both the space and the time. \\\\
 
   \textbf{5.} kNN, Kernelized, and Linear regression are all helpful ways to fit datapoints, but each comes with their own drawbacks. Performance wise, 
   when you compare the best test that is not overfit across all three methods of regression, we find that for kernelized regression, the best value is 1.84, 
@@ -535,7 +535,22 @@ $y$ are scalars, $w$ is also a scalar.
 
 \newpage
 \begin{solution}
-	Your solution here.
+  \textbf{1.} To find the optimal $w$, we can first put the equation
+  for mean squared error in terms of $w$, which is $\hat{y} = wx$. That means
+  that when you consider $E_{y}[(y-\hat{y})^2] = E_{x,y}[(y-wx)^2]$. Now we can just expand the square 
+  and get $E_{x,y}[y^2-2wxy+w^2x^2] = E_y[y^2] - 2wE_{x,y}[xy] + w^2 E_{x}[x^2]$. Then in order to minimize this, the next step is to take the derivate 
+  with respect to w. This then eliminates the first term and gets $-2E_{x}[x^2] + 2wE_{x,y}[xy]$. Then if we rearrange for $w$, we get finally that 
+  the answer is $w = \frac{E_{x,y}[xy]}{E_{x}[x^2]}$. \\\\
+
+  \textbf{2.} To find $E_{x,y}[xy]$ from the observed data, we can take the mean of all pairs $\{x,y\}$, using the equation $\frac{1}{N}\sum_{n=1}^{N}y_nx_n$. 
+  Similarly, for $E_{x}[x^2]$, we can do the average of all points $x_n$ to get another sum being $\frac{1}{N}\sum_{n=1}^{N}x_n^2$. \\\\
+
+  \textbf{3.} By substituting what was found in Part 2, we can get the equation of $w* = \frac{E_{x,y}[xy]}{E_{x}[x^2]} = \frac{\frac{1}{N}\sum_{n=1}^{N}y_nx_n}{\frac{1}{N}\sum_{n=1}^{N}x_n^2}$
+  which does not entirely agree with the findings from the book, but follows the same main tenants and ideas. \\\\
+
+  \textbf{4.} The calculations done in this question do not explicitly rely on x and y being jointly Gaussian. That is because the values here 
+  are given primarily in terms of $E_x[x^2]$ and $E_{x,y}[xy]$, which are not exclusive to being a Gaussian distribution. Any value, regardless of distribution 
+  will have an expected value, as is the definition of random variables. 
 \end{solution}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
