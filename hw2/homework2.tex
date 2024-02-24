@@ -468,7 +468,8 @@ After implementing the above classifiers, complete the following exercises:
   Logistic Regression Classifier: \\
   \includegraphics[width=0.4\textwidth]{softmax_regression_result.png} \\
 
-  
+  Logistics Regression with Basis \\
+  \includegraphics[width=0.4\textwidth]{softmax_regression_with_feature_map.png} \\
 
   kNN with k = 1: \\
   \includegraphics[width=0.4\textwidth]{knn_k1.png} \\
@@ -476,10 +477,32 @@ After implementing the above classifiers, complete the following exercises:
   kNN with k = 5: \\
   \includegraphics[width=0.4\textwidth]{knn_k5.png} \\
 
-
-
-
 \end{center}
+  \textbf{1.} There are many similarities and differences among the models. For similarities, the most obvious is that 
+  each model is trying to accomplish the same thing: successfully classify the data into Dwarf, Giant, or Supergiant. Because of this, 
+  most of the graphs have similar trends, where even though the shape or size of regions may differ, the general classification of that region of space remains the same. 
+  Despite these similarities, there are also many differences between the models. This is because each model has distinct assumptions that underly their decision boundaries. 
+  For example, the Generative Gaussian model with shared covariance operates in a linear decision boundary because it assumes there is a Gaussian distribution, and the same is said for 
+  a Gaussian Distribution with Separate Covariances, which operates with a quadratic assumption. The Softmax boundary looks very distinct from the other two categories because it features 
+  non-linear boundaries by way of the feature transformations. Making the softmax reliant on a basis above the two dimensions it is graphed on leads to nonlinear graphing and a distinct boundary 
+  between classifications which isn't seen in kNN or Gaussian. The kNN decision boundaries are shaped that way because they are much more reliant on the actual data. kNN boundaries are not constrained to a certain mapping or plane, 
+  but are very specialized to the shape of the graph and as such don't have a uniform appearance per-say
+  
+  \textbf{2.} Here is what the point (3, -2) would be classified as in each graph: \\
+  Graph A: Dwarf \\
+  Graph B: Dwarf \\
+  Graph C: Dwarf \\
+  Graph D: Supergiant \\
+  Graph E: Dwarf \\
+  Graph F: Dwarf \\
+
+  For a Gaussian model, it makes its classification decision based on which Gaussian Distribution that point falls under. The pros of a Gaussian Distribution is that it is probabilistic in nature 
+  and so allows for some variance within the classifications, but a con is that the boundary can only be expressed in a linear or quadratic boundary which underrepresents a lot of boundaries.
+  The Softmax regression calculates the probabilities according to the softmax function and chooses the class with the highest probability as the predicted class of the star. A pro of the softmax regression is that 
+  it can model complex and nonlinear decision boundaries, but a con is that can overfit or create too much "noise" in the process with a complex basis. Laslty, kNN operates 
+  by making decision boundaries according to the data points around a given area, the classification of a point will be the same as the majority of the k-nearest points to it. A pro of this method is that 
+  it allows for complex boundaries which can conform to almost any shape, but a con of kNN is that it requires a lot of computation on larger data sets and can be time-ineffective for that reason. As a modeler, 
+  it is important to be aware of the dangers of extrapolation; even if a model fits well within the range of the data given, it may not be generalizable. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Name and Calibration
@@ -488,6 +511,6 @@ After implementing the above classifiers, complete the following exercises:
 \textbf{Dan Tracy}
 \subsection*{Collaborators and Resources}
 Whom did you work with, and did you use any resources beyond cs181-textbook and your notes?
-I got assistance from Students Teresa Lu-Remeo and Christine Lee, but most of the work was done independently. 
+I got assistance from Students Teresa Lu-Remeo and Christine Lee, but most of the work was done independently.
 
 \end{document}
