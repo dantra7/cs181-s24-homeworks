@@ -219,7 +219,15 @@ more informed approximation, which will have a lower bias than with less data po
 more potential there is for variance. As data continues to be collected, that data picks up more on variability within what is being measured,
 so the models are likely to have a higher variance. \\\\
 
-\textbf{4.} \\\\
+\textbf{4.} I found that at the test point $t = 0.1$, Model 1, which is the first 30 data points, gives a predicted probability of $0.3482$, which 
+can be interpreted by saying that the first model is .3482 certain that the planet is visible at that time. This means that because this value is closer to 0 
+than it is to 1 that this model is relatively more certain that the planet is not visible at this time than that it is visible. Then I calulcated the variance of the answers 
+that all ten models gave, and found that the variance between all ten models was 0.0049, indicating that there is not much variation at all between individual models. 
+This also helps to quantify the uncertainty because it is clear to see that all ten of the models are very similar to each other, so all the models roughly agree that 
+the probability is closer to 0 than 1, which make the assertion that the planet is not usually seen at time t = 1 even more certain. Then, when done again for t = 3.2, I found that
+for model 1, the predicted probability at 3.2 was 0.6074, which again means that for model 1, there is a roughly 60\% chance that the planet can be seen at time 3.2, which means it 
+is more likely to be present than not, but does not have a certainty or guarantee to be seen. When calculating the variance over the 10 model at time 3.2 I got Variance = 0.0056, which once again shows that all ten models agree 
+pretty closely and increases the certainty of model 1's findings.  \\\\
 
 \textbf{5.} To identify the ideal time, I would use the second model; the one based off of 
 basis 2. That is because that model is in a nice sweet spot of not being overfit and having a reasonably small bias 
@@ -295,7 +303,7 @@ Lagrange multiplier $\lambda$ and constructing the Lagrangian function,
 It can be shown that it is a necessary condition that the optimum
 is a critical point of this new function. We can find this point by solving two equations:
 
-\[\frac{\partial L(\boldx, \lambda)}{\partial  \boldx} = 0  \ \ \text{and}\  \  \frac{\partial L(\boldx, \lambda)}{\partial \lambda} = 0 \]
+\[\dfrac{\partial L(\boldx, \lambda)}{\partial  \boldx} = 0  \ \ \text{and}\  \  \dfrac{\partial L(\boldx, \lambda)}{\partial \lambda} = 0 \]
 
 
 \paragraph{Cookbook formulas.} Here are some formulas you might want to consider
@@ -306,21 +314,62 @@ evaluation of this homework). In general, you can use any formula from the matri
 as long as you cite it. We opt for the following common notation:
 $\boldX^{-\top} := (\boldX^{\top})^{-1}$
 \begin{align*}
-  & \frac{\partial \bolda^\top \boldX^{-1} \boldb}{\partial \boldX} = - \boldX^{-\top} \bolda \boldb^\top \boldX^{-\top} \\
-  & \frac{\partial \ln | \det (\boldX) |}{\partial \boldX} = \boldX^{-\top}
+  & \dfrac{\partial \bolda^\top \boldX^{-1} \boldb}{\partial \boldX} = - \boldX^{-\top} \bolda \boldb^\top \boldX^{-\top} \\
+  & \dfrac{\partial \ln | \det (\boldX) |}{\partial \boldX} = \boldX^{-\top}
  \end{align*}
  \end{problem}
 
  \newpage 
- \textbf{1.} To find the log likelihood, we can start with the equation for likelihood and work 
- from there. The equation for likelihood of one point $(x_i, y_i)$ is expressed as $P(x_i,y_i | \pi) = P(x_i | y_i = C_k)P(y_i = C_k | \pi)$ 
- Therefore across the whole dataset it would result in $P(D|\pi) = \Pi_{i=1}^N[P(x_i | y_i = C_k)P(y_i = C_k | \pi)]$. Then we also know that the 
- prior which is that $P(y = C_k | \pi) = \pi_k$, so we know $P(D|\pi) = \Pi_{i=1}^N[P(x_i | y_i = C_k)\pi_k]$. Then, we can take the log of each side 
- to get $\ln(P(D|\pi)) = \sum_{i=1}^{N}ln[P(x_i|y_i = C_k) * \pi_k]$ \\\\
+ \textbf{1.} Since we want to say something about every data point $y_i$, we can make $n_k$ be equal to the amount of times in ${1,2, ... K}$ where $y_i = C_k$. 
+ To find the log-likelihood of $P(D | \pi)$, we first must calculate the likelihood. Which is $\Pi_{i=1}^n [P(x_i, y_i) | \pi] = \Pi_{i=1}^n P(x_i | y_i, \pi) P(y_i | \pi)$.
+ That gives us the probability of the data given $\pi$. But more important than $\pi$ is the idea that only when $y_i = C_k$ will the value by non-zero, just by definition of one-hot encoding.
+ This means we can rewrite the probability as $\Pi_{i=1}^n [P(x_i | y_i = C_k)\pi_k]$. \\
+ Then the next step is to take this equation and take the log of it, then using log rules: 
+ \begin{center}
+  $\ln[\Pi_{i=1}^n [P(x_i | y_i = C_k)\pi_k]] = \sum_{i=1}^{n} \ln(P(x_i|y_i = C_k)\pi_k) = \sum_{i=1}^{n} [\ln(P(x_i|y_i = C_k) + \ln(\pi_k))]$
+ \end{center}
+ Now from this we can complete the calculation using an indicator function, so that we only include values where $y_i = C_k$. We can define this as $\mathbb{I}(y_i = C_k)$ where $\mathbb{I}$ is 1 where $y_i = C_k$ and 0 otherwise.
+ Then we can make two sums, one over all data points and the other which is to sum over all the non-zero data points, or points where $y_i \in n_k$With that defined we can now write it out fully as: 
+ \begin{center}
+    $\ln(P(D | \pi)) = \sum_{k=1}^{K} \sum_{i=1}^{n} \mathbb{I}(y_i = C_k)(\ln(P(x_i | y_i = C_k)) + ln(\pi_k))$
+ \end{center}
 
- \textbf{2.} As per the hint provided in the problem, we know that $L(x, \lambda) = f(x) + \lambda g(x)$ and we know in this case that $f(x)$ is the log likelihood,
- and that $g(x)$ is the restriction on $\pi_k$, so we have $L(\pi, \lambda) = \ln(P(D | \pi)) + \lambda(\sum_{k}\pi_k-1)$
+ \textbf{2.} Using the hint given in the problem, we want to optimize the log likelihood, but use the constraint $\sum_{k} \pi_k - 1 = 0$. Then also using the hint, we know we can set this up as: 
+ \begin{center}
+    $L(\pi, \lambda) = \ln(P(D | \pi)) + \lambda(\sum_{k}\pi_k - 1)$ Then as per Part 1 $= \sum_{k=1}^{K} \sum_{i=1}^{n} \mathbb{I}(y_i = C_k)(\ln(P(x_i | y_i = C_k)) + ln(\pi_k)) + \lambda(\sum_{k}\pi_k - 1)$
+ \end{center}
+ Now, we want to solve for both $\dfrac{\partial L(\pi, \lambda)}{\partial \pi} = 0$ and $\dfrac{\partial L(\pi, \lambda)}{\partial \lambda} = 0$. Focusing on the first one with respect to pi, we can see that
+ in order to solve this equation, we can think about it in terms of the sum from 1 to K of $\pi_k$, and so we can sum over all the data points to get that $\sum_{i=1}^{n}\dfrac{y_i}{\pi_k} + \lambda = 0$. Rearranging for $\pi_k$, 
+ we get that $\pi_k = - \dfrac{\sum_{i=1}^{n} y_i}{\lambda}$ \\
+ Next, we can solve for $\dfrac{\partial L(\pi, \lambda)}{\partial \lambda}$. This is simpler, because the first probability that we found in Part 1 above does not include any lambda terms, so we only need to take into account
+ $\lambda(\sum_{k=1}^{K} \pi_k - 1)$. Then since this equation has lambda on the outside, the derivative is simply $\sum_{k=1}^{K} \pi_k - 1$. This leaves us with the equation $\sum_{k=1}^{K} \pi_k - 1 = 0$, then we can substitute
+ the $\pi_k$ found above and get $\sum_{k=1}^{K} - \dfrac{\sum_{i=1}^{n} y_i}{\lambda} - 1 = 0$. Then, since we defined $n_k$ to be the number of values such that $y_i = C_k$, and those are the only nonzero additions, we know that 
+ $\sum_{k=1}^{K} \sum_{i=1}^{n} y_i = \sum_{i=1}^{n} y_i = n_k$ just by nature of definition. This leaves us with the expression $\dfrac{n_k}{\lambda} = -1$, so $\lambda = -n_k$. Then using this, we can go back to the equation for $\pi_k$
+ and we find that $\pi_k = \dfrac{n_k}{n}$. \\
+ This makes intuitve sense because we want to maximize the size of $n_k$, so it makes sense to have the maximum parameter be the true proportion of those points in order to have the best representation. \\\\
 
+ \textbf{3.} Again, in part one we found: $\ln(P(D | \pi)) = \sum_{k=1}^{K} \sum_{i=1}^{n} y_{ik}(\ln(P(x_i | y_i = C_k)) + ln(\pi_k))$, and now we can rewrite this given the class-conditioned probability as $\sum_{k=1}^{K} \sum_{i=1}^{n} y_{ik}(\ln(N(x_i | \mu_k, \Sigma))) + ln(\pi_k)$, 
+ Now we want to take the gradient of this with respect to $\mu_k$ and we get: 
+ \begin{center}
+  $\dfrac{\partial}{\partial \mu_k} (\ln(P(D | \pi))) = \dfrac{\partial}{\partial \mu_k} [\sum_{k=1}^{K} \sum_{i=1}^{n} y_{ik}(\ln(N(x_i | \mu_k, \Sigma)))]$ \\
+  $= \dfrac{\partial}{\partial \mu_k}[\sum_{k=1}^{K} \sum_{i=1}^{n} y_{ik} \ln(\dfrac{1}{\sqrt{2\pi\Sigma}} \exp(-\dfrac{(x_i - \mu_k)^T \Sigma^{-1} (x_i - \mu_k)}{2}))]$ \\
+  $= \dfrac{\partial}{\partial \mu_k}[\sum_{i=1}^{n}-y_{ik}(\dfrac{(x_i - \mu_k)^T \Sigma^{-1} (x_i - \mu_k)}{2})]$.
+ \end{center}
+ Then we can use the Matrix Cookbook provided in the question to see that this is all equal to: 
+ \begin{center}
+    $\sum_{i=1}^{n} -y_{ik} \Sigma^{-1} (\mu_k - x_i) = \sum_{i=1}^{n} (\mathbb{I}(y_i = C_k))(-\Sigma^{-1} (\mu_k - x_i))$
+ \end{center}
+
+ \textbf{4.} For the maximum likelihood, we can take the equation we solved for in part 3 and just set it equal to 0: $\sum_{i=1}^{n} -y_{ik} \Sigma^{-1} (\mu_k - x_i)$, then we can 
+ distribute the $y_{ik}$ since it is impacted by the sum and keep the $\Sigma^{-1}$ outside of the sum which leaves us with $\Sigma^{-1} \sum_{i=1}^{n}(-y_{ik}\mu_k + x_i y_{ik}) = \Sigma^{-1} [\mu_k\sum_{i=1}^{n}(-y_{ik}) + \sum_{i=1}^{n} x_i y_{ik}] = 0$.
+ Then, since we want to solve for $\mu_k$, we don't care about $\Sigma^{-1}$ because it has no relevance to $\mu_k$, and we can rearrange to get that: 
+ \begin{center}
+    $\hat{\mu_k} = \dfrac{\sum_{i=1}^{n} x_i y_{ik}}{\sum_{i=1}^{n} y_{ik}}$.
+ \end{center}
+ Then, just as we did in the last part, we can rewrite this as the Indicator function to get that 
+ \begin{center}
+    $\hat{\mu_k} = \dfrac{\sum_{i=1}^{n} x_i \mathbb{I}(y_i = C_k)}{\sum_{i=1}^{n} \mathbb{I}(y_i = C_k)}$
+ \end{center}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 3
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
