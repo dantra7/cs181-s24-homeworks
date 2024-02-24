@@ -369,7 +369,36 @@ $\boldX^{-\top} := (\boldX^{\top})^{-1}$
  Then, just as we did in the last part, we can rewrite this as the Indicator function to get that 
  \begin{center}
     $\hat{\mu_k} = \dfrac{\sum_{i=1}^{n} x_i \mathbb{I}(y_i = C_k)}{\sum_{i=1}^{n} \mathbb{I}(y_i = C_k)}$
+ \end{center} 
+ Once again this answer is intuitive because it shows that the maximum likelihood approximates the sum of all x values of a class
+ divided by all the points in the class, effectively giving an average of that class, which is the maximum likelihood. \\\\
+
+ \textbf{5.} This question wants $\dfrac{\partial}{\partial \Sigma} [\ln(P(d | \pi))]$. \\
+ Once again, we can build off the work we've done so far in this problem to write this more concretely as: 
+ \begin{center}
+  $\dfrac{\partial}{\partial \Sigma} [\ln(P(d | \pi))] = \dfrac{\partial}{\partial \Sigma}[\sum_{k=1}^{K} \sum_{i=1}^{n} y_{ik}(\ln(N(x_i | \mu_k, \Sigma))) + ln(\pi_k)] = \dfrac{\partial}{\partial \Sigma}[\sum_{k=1}^{K} \sum_{i=1}^{n} y_{ik}(\ln(N(x_i | \mu_k, \Sigma)))]$ \\
+  $= \sum_{k=1}^{K} \sum_{i=1}^{n} y_{ik} \dfrac{\partial}{\partial \Sigma} \ln(\dfrac{1}{\sqrt{2\pi\Sigma}}) + \ln(\exp(-\dfrac{(x_i - \mu_k)^T \Sigma^{-1} (x_i - \mu_k)}{2}))$ \\
+  $= \sum_{k=1}^{K} \sum_{i=1}^{n} y_{ik} \dfrac{\partial}{\partial \Sigma} \left[\ln(\dfrac{1}{\sqrt{2\pi}}) + \ln(\Sigma^{-0.5})-\dfrac{(x_i - \mu_k)^T \Sigma^{-1} (x_i - \mu_k)}{2}\right]$
  \end{center}
+ From there, we can once again use the cookbook formulas and simplify this as: 
+ \begin{center}
+  $\sum_{k=1}^{K} \sum_{i=1}^{n} y_{ik} \left(-\dfrac{1}{2} \Sigma^{-T} + \dfrac{\Sigma^{-T}(x_i - \mu_k)(x_i - \mu_k)^T \Sigma^{-T}}{2}\right)$
+ \end{center}
+ And we finish once again by putting it in terms of the indicator function to get 
+ \begin{center}
+  $\sum_{k=1}^{K} \sum_{i=1}^{n} \mathbb{I}(y_i = C_k) \left(-\dfrac{1}{2} \Sigma^{-T} + \dfrac{\Sigma^{-T}(x_i - \mu_k)(x_i - \mu_k)^T \Sigma^{-T}}{2}\right)$
+ \end{center}
+
+ \textbf{6.} Very similar to Problem 4, we can find the Maximum Likelihood just by setting our answer in part 5 equal to 0 and solving. First, we can pull the term 
+ $\dfrac{1}{2}\Sigma^{-T}$ from the Sums because it does not depend on $k$ or $i$. As we pull it out though, we have to acknowledge that it will be multiplied by $n_k$, 
+ or the number of times that $y_i = C_k$, so we can rewrite this as $-\dfrac{n}{2}\Sigma^{-T} + \sum_{k=1}^{K} \sum_{i=1}^{n} y_{ik} \left(\dfrac{\Sigma^{-T}(x_i - \mu_k)(x_i - \mu_k)^T \Sigma^{-T}}{2}\right)$, 
+ then we can subtract that over to get $\sum_{k=1}^{K} \sum_{i=1}^{n} y_{ik} \left(\dfrac{\Sigma^{-T}(x_i - \mu_k)(x_i - \mu_k)^T \Sigma^{-T}}{2}\right) = \dfrac{n}{2} \Sigma^{-T}$. \\
+ Now we can multiply $\Sigma^T$ on the left and right of both sides to eliminate the $\Sigma^{-T}$, which results in: 
+ \begin{center}
+  $\sum_{k=1}^{K} \sum_{i=1}^{n} y_{ik} \left(\dfrac{(x_i - \mu_k)(x_i - \mu_k)^T}{2}\right) = \dfrac{n}{2} \Sigma^{T}$, so we have
+  $\Sigma^T = \sum_{k=1}^{K} \sum_{i=1}^{n} \mathbb{I}(y_i = C_k) \left(\dfrac{(x_i - \mu_k)(x_i - \mu_k)^T}{n}\right)$
+ \end{center}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 3
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -425,13 +454,40 @@ After implementing the above classifiers, complete the following exercises:
 \end{enumerate}
 \end{problem}
 
+\newpage
+\textbf{Solution:} \\
+\textbf{1.} I was able to make the following decision boundaries: 
+
+\begin{center}
+  Gaussian with Shared Covariance: \\
+  \includegraphics[width=0.4\textwidth]{gaussian_generative_shared_covariance.png} \\
+
+  Gaussian with Separate Covariance: \\ 
+  \includegraphics[width=0.4\textwidth]{gaussian_generative_separate_covariance.png} \\
+
+  Logistic Regression Classifier: \\
+  \includegraphics[width=0.4\textwidth]{softmax_regression_result.png} \\
+
+  
+
+  kNN with k = 1: \\
+  \includegraphics[width=0.4\textwidth]{knn_k1.png} \\
+
+  kNN with k = 5: \\
+  \includegraphics[width=0.4\textwidth]{knn_k5.png} \\
+
+
+
+
+\end{center}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Name and Calibration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection*{Name}
-
+\textbf{Dan Tracy}
 \subsection*{Collaborators and Resources}
 Whom did you work with, and did you use any resources beyond cs181-textbook and your notes?
-
+I got assistance from Students Teresa Lu-Remeo and Christine Lee, but most of the work was done independently. 
 
 \end{document}
